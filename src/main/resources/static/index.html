@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PharmaSympto</title>
+
+    <style>
+        /* CSS for styling your form and page */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer.
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+<h1>Search for Side Effects</h1>
+<form id="searchForm">
+    <label for "sideEffectsInput">Enter Side Effects:</label>
+    <input type="text" id="sideEffectsInput" name="sideEffectsInput" required>
+
+    <!-- Add a submit button -->
+    <button type="submit">Search</button>
+</form>
+
+<div id="result"></div>
+
+<script>
+    document.getElementById("searchForm").addEventListener("submit", function (event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Get the user's input
+        const userInput = document.getElementById("sideEffectsInput").value;
+
+        // Send the input to your Spring Boot backend using AJAX or Fetch
+        fetch(`/runPythonScript?input=${userInput}`)
+            .then(response => response.text())
+            .then(data => {
+                // Display the result in separate lines
+                const resultDiv = document.getElementById("result");
+                resultDiv.innerHTML = "<h2>Search Results</h2>";
+
+                // Split the data into individual lines and process each line
+                const lines = data.split('\n');
+                for (const line of lines) {
+                    if (line) {
+                        resultDiv.innerHTML += line + "<br>";
+                    }
+                }
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+    });
+</script>
+</body>
+</html>
